@@ -1,5 +1,4 @@
 ﻿using mySnake.shared;
-using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace mySnake.snake
 {
-    internal class SnakeGameLogic : BaseGameLogic
+    public class SnakeGameLogic : BaseGameLogic
     {
-        private SnakeGamePlayState gameplayState = new SnakeGamePlayState();
-
-
-        public void GotoGameplay()
+        SnakeGameplayState gameplayState = new SnakeGameplayState();
+        public override void Update(float deltaTime)
         {
-            gameplayState.Reset();
+            gameplayState.Update(deltaTime);
         }
+
         public override void OnArrowUp()
         {
             gameplayState.SetDirection(SnakeDir.Up);
@@ -37,9 +35,9 @@ namespace mySnake.snake
             gameplayState.SetDirection(SnakeDir.Right);
         }
 
-        public override void Update(float deltaTime)
+        public void GotoGameplay()
         {
-            gameplayState.Update(deltaTime);
+            gameplayState.Reset();
         }
     }
 }

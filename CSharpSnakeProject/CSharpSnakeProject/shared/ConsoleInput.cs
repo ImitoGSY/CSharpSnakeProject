@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace mySnake.shared
 {
-    internal class ConsoleInput
+    public class ConsoleInput
     {
         public interface IArrowListener
         {
@@ -19,11 +19,10 @@ namespace mySnake.shared
 
         private readonly HashSet<IArrowListener> arrowListeners = new();
 
-        public void Subscribe(IArrowListener l)
+        public void Subscribe(IArrowListener iArrowListener)
         {
-            arrowListeners.Add(l);
-        }      
-
+            arrowListeners.Add(iArrowListener);
+        }
 
         public void Update()
         {
@@ -32,22 +31,21 @@ namespace mySnake.shared
                 var key = Console.ReadKey();
 
                 switch (key.Key)
-                {                   
+                {
                     case ConsoleKey.UpArrow or ConsoleKey.W:
-                        foreach (var l in arrowListeners) l.OnArrowUp();
+                        foreach (var aL in arrowListeners) aL.OnArrowUp();
                         break;
                     case ConsoleKey.DownArrow or ConsoleKey.S:
-                        foreach (var l in arrowListeners) l.OnArrowDown();
+                        foreach (var aL in arrowListeners) aL.OnArrowDown();
                         break;
                     case ConsoleKey.LeftArrow or ConsoleKey.A:
-                        foreach (var l in arrowListeners) l.OnArrowLeft();
+                        foreach (var aL in arrowListeners) aL.OnArrowLeft();
                         break;
                     case ConsoleKey.RightArrow or ConsoleKey.D:
-                        foreach (var l in arrowListeners) l.OnArrowRight();
+                        foreach (var aL in arrowListeners) aL.OnArrowRight();
                         break;
                 }
             }
-
         }
     }
 }

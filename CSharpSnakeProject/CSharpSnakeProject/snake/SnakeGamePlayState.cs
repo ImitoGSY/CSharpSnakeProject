@@ -5,78 +5,76 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using mySnake.shared;
-using Shared;
 
 namespace mySnake.snake
 {
-    internal enum SnakeDir
+    public enum SnakeDir
     {
         Up, Down, Left, Right
     }
-    internal class SnakeGamePlayState : BaseGameState
+    public class SnakeGameplayState : BaseGameState
     {
+        private SnakeDir _currentDir = SnakeDir.Right;
+        private float _timeToMove = 0f;
+        private List<Cell> _body = new();
         private struct Cell
         {
-            public int x; public int y;
+            public int X;
+            public int Y;
 
             public Cell(int x, int y)
             {
-                this.x = x;
-                this.y = y;
+                X = x;
+                Y = y;
             }
         }
 
-        private List<Cell> _body = new();
-        private SnakeDir currentDir = SnakeDir.Left;
-
-        private float _timeToMove = 0f;
-
         public void SetDirection(SnakeDir dir)
         {
-            currentDir = dir;
+            _currentDir = dir;
         }
 
+        private Cell ShiftTo(SnakeDir dir, Cell curCell)
+        {
+            switch (dir)
+            {
+                case SnakeDir.Up:
+                    return new Cell(curCell.X, curCell.Y + 1);
+                    break;
+                case SnakeDir.Down:
+                    return new Cell(curCell.X, curCell.Y - 1);
+                    break;
+                case SnakeDir.Left:
+                    return new Cell(curCell.X - 1, curCell.Y);
+                    break;
+                case SnakeDir.Right:
+                    return new Cell(curCell.X + 1, curCell.Y);
+                    break;
+            }
+            return curCell;
+        }
         public override void Reset()
         {
             _body.Clear();
-            currentDir = SnakeDir.Left;
-            _body.Add(new(0, 0));
+            _currentDir = SnakeDir.Right;
+            _body.Add(new Cell(0, 0));
             _timeToMove = 0f;
         }
 
         public override void Update(float deltaTime)
         {
+
             _timeToMove -= deltaTime;
-            if (_timeToMove > 0f)
+            if (_timeToMove > 0)
                 return;
+            else
+                _timeToMove = 1f / 5;
 
-            _timeToMove = 1f / 4;
-            var head = _body[0];
-            var nextCell = ShiftTo(head, currentDir);
-
+            Cell head = _body[0];
+            Cell nextCell = ShiftTo(_currentDir, head);
             _body.RemoveAt(_body.Count - 1);
             _body.Insert(0, nextCell);
-
-            Console.WriteLine($"{_body[0].x}, {_body[0].y}");
+            Console.WriteLine($"_body_X {_body[0].X}, _body_Y {_body[0].Y}");
         }
-
-        private Cell ShiftTo(Cell from, SnakeDir toDir)
-        {
-            switch (toDir)
-            {
-                case SnakeDir.Up:
-                    return new Cell(from.x, from.y + 1);
-                case SnakeDir.Down:
-                    return new Cell(from.x, from.y - 1);
-                case SnakeDir.Left:
-                    return new Cell(from.x - 1, from.y);
-                case SnakeDir.Right:
-                    return new Cell(from.x + 1, from.y);
-            }
-
-            return from;
-        }
-
-
     }
 }

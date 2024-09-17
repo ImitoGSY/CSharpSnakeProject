@@ -1,5 +1,4 @@
-﻿using Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace mySnake.shared
 {
-    internal abstract class BaseGameLogic : ConsoleInput.IArrowListener
+    public abstract class BaseGameLogic : ConsoleInput.IArrowListener
     {
         public abstract void OnArrowUp();
         public abstract void OnArrowDown();

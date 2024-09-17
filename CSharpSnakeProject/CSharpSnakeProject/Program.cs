@@ -1,6 +1,5 @@
 ﻿using mySnake.shared;
 using mySnake.snake;
-using Shared;
 using System.Diagnostics;
 
 internal class Program 

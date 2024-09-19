@@ -1,43 +1,66 @@
-﻿using mySnake.shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSharpSnakeProject.shared;
 
-namespace mySnake.snake
+namespace CSharpSnakeProject.snake
 {
     public class SnakeGameLogic : BaseGameLogic
     {
-        SnakeGameplayState gameplayState = new SnakeGameplayState();
-        public override void Update(float deltaTime)
-        {
-            gameplayState.Update(deltaTime);
-        }
+        private SnakeGamePlayState _gameplayState = new();
 
+
+        public void GotoGameplay()
+        {
+            _gameplayState.FieldWidth = ScreenWidth;
+            _gameplayState.FieldHeight = ScreenHeight;
+            ChangeState(_gameplayState);
+            _gameplayState.Reset();
+        }
         public override void OnArrowUp()
         {
-            gameplayState.SetDirection(SnakeDir.Up);
+            if (CurrentState != _gameplayState) return;
+            _gameplayState.SetDirection(SnakeDir.Up);
         }
 
         public override void OnArrowDown()
         {
-            gameplayState.SetDirection(SnakeDir.Down);
+            if (CurrentState != _gameplayState) return;
+            _gameplayState.SetDirection(SnakeDir.Down);
         }
 
         public override void OnArrowLeft()
         {
-            gameplayState.SetDirection(SnakeDir.Left);
+            if (CurrentState != _gameplayState) return;
+            _gameplayState.SetDirection(SnakeDir.Left);
         }
 
         public override void OnArrowRight()
         {
-            gameplayState.SetDirection(SnakeDir.Right);
+            if (CurrentState != _gameplayState) return;
+            _gameplayState.SetDirection(SnakeDir.Right);
         }
 
-        public void GotoGameplay()
+        public override void Update(float deltaTime)
         {
-            gameplayState.Reset();
+            _gameplayState.Update(deltaTime);
+            if (CurrentState != _gameplayState)
+            {
+                GotoGameplay();
+            }
+        }
+
+        public override ConsoleColor[] CreatePalette()
+        {
+            return
+            [
+                ConsoleColor.Green,
+                ConsoleColor.Red,
+                ConsoleColor.White,
+                ConsoleColor.Blue,
+            ];
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace mySnake.shared
+namespace CSharpSnakeProject.shared
 {
     public class ConsoleInput
     {
@@ -14,8 +14,9 @@ namespace mySnake.shared
             void OnArrowDown();
             void OnArrowLeft();
             void OnArrowRight();
+            void DrawNewState(float deltaTime, ConsoleRenderer renderer);
         }
-       
+
 
         private readonly HashSet<IArrowListener> arrowListeners = new();
 

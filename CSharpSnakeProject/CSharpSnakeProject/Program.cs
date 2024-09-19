@@ -1,28 +1,49 @@
-﻿using mySnake.shared;
-using mySnake.snake;
+﻿using CSharpSnakeProject.snake;
+using CSharpSnakeProject.shared;
 using System.Diagnostics;
 
-internal class Program 
+namespace CSharpSnakeProject
 {
-    static void Main()
+    public class Program
     {
+        const float targetFrameTime = 1f / 60f;
 
-        var gameLogic = new SnakeGameLogic();
-
-        var input = new ConsoleInput();
-        gameLogic.InitializeInput(input);
-        gameLogic.GotoGameplay();
-
-        var lastFrameTime = DateTime.Now;
-        while (true)
+        static void Main()
         {
-            input.Update();
-            var frameStartTime = DateTime.Now;
-            float deltaTime = (float)(frameStartTime - lastFrameTime).TotalSeconds;
-            gameLogic.Update(deltaTime);
-            lastFrameTime = frameStartTime;
+            var gameLogic = new SnakeGameLogic();
+            var palette = gameLogic.CreatePalette();
+            var renderer0 = new ConsoleRenderer(palette);
+            var renderer1 = new ConsoleRenderer(palette);
+            var input = new ConsoleInput();
+            var prevRenderer = renderer0;
+            var currRenderer = renderer1;
+            var lastFrameTime = DateTime.Now;
+
+            gameLogic.InitializeInput(input);
+
+
+            while (true)
+            {
+                var frameStartTime = DateTime.Now;
+                float deltaTime = (float)(frameStartTime - lastFrameTime).TotalSeconds;
+                input.Update();
+                gameLogic.DrawNewState(deltaTime, currRenderer);
+                lastFrameTime = frameStartTime;
+
+                if (!currRenderer.Equals(prevRenderer)) currRenderer.Render();
+
+                var tmp = prevRenderer;
+                prevRenderer = currRenderer;
+                currRenderer = tmp;
+                currRenderer.Clear();
+
+                var nextFrameTime = frameStartTime + TimeSpan.FromSeconds(targetFrameTime);
+                var endFrameTime = DateTime.Now;
+                if (nextFrameTime > endFrameTime)
+                {
+                    Thread.Sleep((int)(nextFrameTime - endFrameTime).TotalMilliseconds);
+                }
+            }
         }
     }
-
-
 }

@@ -45,11 +45,12 @@ namespace CSharpSnakeProject.snake
 
         public override void Update(float deltaTime)
         {
-            _gameplayState.Update(deltaTime);
             if (CurrentState != _gameplayState)
             {
                 GotoGameplay();
             }
+            _gameplayState.Update(deltaTime);
+
         }
 
         public override ConsoleColor[] CreatePalette()

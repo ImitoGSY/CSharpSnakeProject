@@ -17,7 +17,6 @@ namespace CSharpSnakeProject.shared
             void DrawNewState(float deltaTime, ConsoleRenderer renderer);
         }
 
-
         private readonly HashSet<IArrowListener> arrowListeners = new();
 
         public void Subscribe(IArrowListener iArrowListener)

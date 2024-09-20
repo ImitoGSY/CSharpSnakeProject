@@ -97,7 +97,7 @@ namespace CSharpSnakeProject.shared
                 for (int h = 0; h < Height; h++)
                 {
                     _pixelColors[w, h] = 0;
-                    _pixels[w, h] = (char)0;
+                    _pixels[w, h] = (char) 0;
                 }
         }
 
